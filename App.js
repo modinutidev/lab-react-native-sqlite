@@ -1,42 +1,57 @@
-import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { adicionaNota, buscarNotas, criaTabela } from "./src/services/Notas";
-
-async function novaNota() {
-  const novaNota = {
-    titulo: "Primeira nota",
-    categoria: "Educação",
-    texto: "Estudar JavaScript",
-  };
-
-  console.log(await adicionaNota(novaNota));
-}
-
-async function mostrarNotas() {
-  console.log(await buscarNotas());
-}
+import {
+  adicionaNota,
+  buscarNota,
+  buscarNotas,
+  criaTabela,
+  deletarNota,
+  editaNota,
+} from "./src/services/Notas";
 
 export default function App() {
   useEffect(() => {
     criaTabela();
-    novaNota();
+    novaNota({
+      titulo: "JavaScript",
+      categoria: "Educação",
+      texto: "Estudar promises.",
+    });
+    novaNota({
+      titulo: "JavaScript",
+      categoria: "Educação",
+      texto: "Estudar promises.",
+    });
+    modificarNota({
+      titulo: "Pagar conta de luz",
+      categoria: "Financeiro",
+      texto: "Não atrasar.",
+      id: 1,
+    });
+    mostrarNotas();
+    mostraNota(1);
+    excluirNota(1);
     mostrarNotas();
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app! ok</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  async function novaNota(nota) {
+    console.log(await adicionaNota(nota));
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+  async function mostraNota(idNota) {
+    console.log(await buscarNota(idNota));
+  }
+
+  async function mostrarNotas() {
+    console.log(await buscarNotas());
+  }
+
+  async function modificarNota(nota) {
+    console.log(await editaNota(nota));
+  }
+
+  async function excluirNota(idNota) {
+    console.log(await deletarNota(idNota));
+  }
+
+  return <></>;
+}
